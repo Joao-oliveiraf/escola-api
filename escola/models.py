@@ -52,4 +52,27 @@ class Cursos(models.Model):
         default='B',
     )
     def __str__(self) -> str:
-        return self.nome
+        return self.descricao
+class Matricula(models.Model):
+    CHOICES = [
+        ('M', 'Matutino'),
+        ('V', 'Vespertino'),
+        ('N', 'Noturno')
+    ]
+    estudante = models.ForeignKey(
+        Estudante,
+        on_delete=models.CASCADE,
+        related_name='estudante',
+    )
+    curso = models.ForeignKey(
+        Cursos,
+        on_delete=models.CASCADE,
+        related_name='curso',
+    )
+    periodo = models.CharField(
+        max_length=1,
+        blank=False,
+        null=False,
+        choices=CHOICES,
+        default='M'
+    )

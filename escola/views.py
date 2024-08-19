@@ -1,19 +1,18 @@
-from django.http import JsonResponse
-from rest_framework.views import APIView
-from rest_framework import generics, status
-from .serializers import EstudanteSerializer
-from .models import Estudante
 
-def estudante(request):
-    if request.method == 'GET':
-        estudante = {
-            'id': '1',
-            'nome': 'John'
-        }
-        return JsonResponse(estudante)
+from rest_framework.views import APIView
+from rest_framework import generics, status, viewsets
+from .serializers import EstudanteSerializer,CursosSerializer, MatriculaSerializer
+from .models import Estudante,Cursos, Matricula
+
     
-class EstudanteView(generics.CreateAPIView):
+class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
-    
 
+class CursoViewSet(viewsets.ModelViewSet):
+    queryset = Cursos.objects.all()
+    serializer_class = CursosSerializer
+
+class MatriculaViewSet(viewsets.ModelViewSet):
+    queryset = Matricula.objects.all()
+    serializer_class = MatriculaSerializer
