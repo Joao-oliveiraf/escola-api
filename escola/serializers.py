@@ -4,7 +4,19 @@ from .models import Estudante, Cursos, Matricula
 class EstudanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estudante
-        fields = ('id','nome', 'email', 'cpf', 'data_nascimento', 'cpf')
+        fields = ('id','nome', 'email', 'cpf', 'data_nascimento', 'num_celular')
+
+    def validate_num_celular(self, num_celular):
+        lista_num = list(num_celular)
+        for chars in lista_num:
+                if not chars.isdigit():
+                    raise serializers.ValidationError('Número de celular deve conter somente digitos.')
+        if len(num_celular) != 11:
+                raise serializers.ValidationError('Número de celular deve ter 11 digitos!')
+        lista_num.insert(2, ' ')
+        lista_num.insert(8, '-')
+        return ''.join(lista_num)
+    
 class CursosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cursos

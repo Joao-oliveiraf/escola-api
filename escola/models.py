@@ -1,5 +1,6 @@
 from django.db import models
 from localflavor.br.models import BRCPFField
+from django.core.validators import MinLengthValidator
 
 class Estudante(models.Model):
     nome = models.CharField(
@@ -39,6 +40,7 @@ class Cursos(models.Model):
         max_length=10,
         blank=False,
         null=False,
+        validators=[MinLengthValidator(3)]
     )
     descricao = models.TextField(
         max_length=255,
