@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Estudante, Cursos, Matricula
+from .validators import nome_invalido,num_celular_invalido
 
 class EstudanteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,15 +8,14 @@ class EstudanteSerializer(serializers.ModelSerializer):
         fields = ('id','nome', 'email', 'cpf', 'data_nascimento', 'num_celular')
 
     def validate_num_celular(self, num_celular):
-        lista_num = list(num_celular)
-        for chars in lista_num:
-                if not chars.isdigit():
-                    raise serializers.ValidationError('Número de celular deve conter somente digitos.')
-        if len(num_celular) != 11:
-                raise serializers.ValidationError('Número de celular deve ter 11 digitos!')
-        lista_num.insert(2, ' ')
-        lista_num.insert(8, '-')
-        return ''.join(lista_num)
+        if num_celular_invalido(num_celular):
+            raise serializers.ValidationError('Número de celular deve seguir o padrão: xx xxxxx-xxxx')
+        return num_celular
+    
+    def validate_nome(self, nome):
+         if nome_invalido(nome):
+              raise serializers.ValidationError('Nome deve conter apenas letras!')
+         return nome
     
 class CursosSerializer(serializers.ModelSerializer):
     class Meta:
