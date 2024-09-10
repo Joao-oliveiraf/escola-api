@@ -9,7 +9,7 @@ from .throttles import MatriculaAnonRateThrottle
     
 class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all().order_by('id')
-    #serializer_class = EstudanteSerializer
+    serializer_class = EstudanteSerializer
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
     search_fields = ['nome', 'cpf']
@@ -36,16 +36,18 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     http_method_names = ["get", "post"]
 
 class ListaMatriculaEstudante(generics.ListAPIView):
+
     def get_queryset(self):
         queryset =  Matricula.objects.filter(estudante_id=self.kwargs['pk']).order_by('id')
         return queryset
     serializer_class = ListaMatriculasEstudanteSerializer
     
 class ListaMatriculaCurso(generics.ListAPIView):
+
     def get_queryset(self):
         queryset =  Matricula.objects.filter(curso_id=self.kwargs['pk']).order_by('id')
         return queryset
-    #serializer_class = ListaMatriculasCursoSerializer
+    serializer_class = ListaMatriculasCursoSerializer
 
     def get_serializer_class(self):
         if self.request.version == 'v2':
