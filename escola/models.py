@@ -47,7 +47,7 @@ class Cursos(models.Model):
         blank=False,
         null=False,
     )
-    nivel_do_curso = models.CharField(
+    nivel = models.CharField(
         max_length=1,
         choices=ESCOLHAS,
         blank=False,

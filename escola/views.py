@@ -5,6 +5,7 @@ from .serializers import EstudanteSerializer,CursosSerializer, MatriculaSerializ
 from .models import Estudante,Cursos, Matricula
 from django_filters.rest_framework import DjangoFilterBackend
 from .throttles import MatriculaAnonRateThrottle
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
     
 class EstudanteViewSet(viewsets.ModelViewSet):
@@ -23,8 +24,9 @@ class CursoViewSet(viewsets.ModelViewSet):
     queryset = Cursos.objects.all().order_by('id')
     serializer_class = CursosSerializer
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter, filters.SearchFilter]
-    ordering_fields = ['nivel_do_curso', 'descricao']
-    search_fields = ['codigo', 'descricao', 'nivel_do_curso']
+    ordering_fields = ['nivel', 'descricao']
+    search_fields = ['codigo', 'descricao', 'nivel']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class MatriculaViewSet(viewsets.ModelViewSet):
     queryset = Matricula.objects.all().order_by('id')
@@ -32,7 +34,7 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     serializer_class = MatriculaSerializer
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['periodo', 'descricao']
-    search_fields = ['codigo', 'descricao', 'nivel_do_curso']
+    search_fields = ['codigo', 'descricao', 'nivel']
     http_method_names = ["get", "post"]
 
 class ListaMatriculaEstudante(generics.ListAPIView):

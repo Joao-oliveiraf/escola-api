@@ -8,7 +8,7 @@ class EstudanteAdmin(admin.ModelAdmin):
     search_fields = ['nome',]
 
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ['id','codigo', 'descricao', 'nivel_do_curso']
+    list_display = ['id','codigo', 'descricao', 'nivel']
     list_display_links = ['codigo', 'descricao']
     list_per_page = 10
     search_fields = ['codigo']
