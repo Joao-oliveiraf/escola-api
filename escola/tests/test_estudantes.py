@@ -9,28 +9,27 @@ from validate_docbr import CPF
 
 
 class EstudantesTestCase(APITestCase):
-
+    fixtures = ['prototipo_banco.json']
     def setUp(self):
-        self.user = User.objects.create_superuser(
-            username='admin',
-            password='admin'
-        )
+        self.user = User.objects.get(username='joaopedro')
         self.url = reverse('Estudantes-list')
         self.client.force_authenticate(user=self.user)
-        self.estudante_1 = Estudante.objects.create(
-            nome='Teste',
-            email='teste1@gmail.com',
-            cpf='09542780036',
-            data_nascimento='2024-11-15',
-            num_celular='51 88888-0000'
-        )
-        self.estudante_2 = Estudante.objects.create(
-            nome='TesteDois',
-            email='teste2@gmail.com',
-            cpf='74693484091',
-            data_nascimento='2024-11-15',
-            num_celular='51 99945-0000'
-        )
+        # self.estudante_1 = Estudante.objects.create(
+        #     nome='Teste',
+        #     email='teste1@gmail.com',
+        #     cpf='09542780036',
+        #     data_nascimento='2024-11-15',
+        #     num_celular='51 88888-0000'
+        # )
+        self.estudante_1 = Estudante.objects.get(id=1)
+        self.estudante_2 = Estudante.objects.get(id=2)
+        # self.estudante_2 = Estudante.objects.create(
+        #     nome='TesteDois',
+        #     email='teste2@gmail.com',
+        #     cpf='74693484091',
+        #     data_nascimento='2024-11-15',
+        #     num_celular='51 99945-0000'
+        # )
     def test_requisicao_get_list_estudantes_200_OK(self):
         """Teste de requisação GET para rota de estudantes"""
 
@@ -42,7 +41,7 @@ class EstudantesTestCase(APITestCase):
         
         response = self.client.get(self.url + '1/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        dados_estudante = Estudante.objects.get(id=1)
+        dados_estudante = self.estudante_1
         dados_serializados = EstudanteSerializer(instance=dados_estudante).data
 
         self.assertEqual(response.data, dados_serializados)
